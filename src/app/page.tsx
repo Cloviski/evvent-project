@@ -1,14 +1,84 @@
 import Link from "next/link";
-
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import CheckIcon from "../assets/check.svg";
+import SortIcon from "../assets/sort.svg";
+import CheckListIcon from "../assets/check-list.svg";
+import Image from "next/image";
+import { Task } from "./_components/task";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
+    <main className="flex min-h-screen flex-col bg-stone-900 px-24 pt-24 text-white text-opacity-75">
+      <div className="flex flex-row items-start">
+        <Image src={CheckListIcon} width={32} height={32} alt="Check Icon" />
+        <h1 className="pl-3 text-3xl font-extrabold">Tasks</h1>
+      </div>
+      <div className="relative flex flex-row items-center py-2">
+        <hr className="absolute bottom-0 w-full"></hr>
+      </div>
+      <div className="flex flex-row items-center py-6">
+        <div className="flex flex-row pr-4">
+          <Image
+            src={CheckIcon}
+            width={16}
+            height={16}
+            alt="Spreadsheet Icon"
+          />
+          <select className="border-none bg-transparent outline-none">
+            <option value="">All</option>
+            <option value="not-started">Not Started</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div className="flex flex-row">
+          <Image src={SortIcon} height={13} alt="Spreadsheet Icon" />
+          <select className="border-none bg-transparent outline-none">
+            <option value="">Priority</option>
+            <option value="not-started">Low</option>
+            <option value="in-progress">Medium</option>
+            <option value="done">High</option>
+          </select>
+        </div>
+      </div>
+
+    </main>
+  );
+}
+
+async function CrudShowcase() {
+  const session = await getServerAuthSession();
+  if (!session?.user) return null;
+
+  const latestPost = await api.post.getLatest();
+
+  return (
+    <div className="w-full max-w-xs">
+      {latestPost ? (
+        <p className="truncate">Your most recent post: {latestPost.name}</p>
+      ) : (
+        <p>You have no posts yet.</p>
+      )}
+
+      <CreatePost />
+    </div>
+  );
+}
+
+/*
+      <div className="flex flex-row items-start">
+        <Image src={CheckIcon} width={32} height={32} alt="Check Icon" />
+        <h1 className="pl-3 text-3xl font-extrabold">Tasks</h1>
+      </div>
+<div className="container flex flex-col items-center justify-center gap-12 px-24 pt-24 "></div>
+*/
+
+/*
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
@@ -59,24 +129,4 @@ export default async function Home() {
         <CrudShowcase />
       </div>
     </main>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  const latestPost = await api.post.getLatest();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
-  );
-}
+*/
