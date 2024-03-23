@@ -1,10 +1,6 @@
-import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import CheckIcon from "../assets/check.svg";
-import SortIcon from "../assets/sort.svg";
-import CheckListIcon from "../assets/check-list.svg";
 import Image from "next/image";
 import { Task } from "./_components/task";
 
@@ -15,7 +11,12 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-stone-900 px-24 pt-24 text-white text-opacity-75">
       <div className="flex flex-row items-start">
-        <Image src={CheckListIcon} width={32} height={32} alt="Check Icon" />
+        <Image
+          src="/assets/check-list.svg"
+          width={32}
+          height={32}
+          alt="Check Icon"
+        />
         <h1 className="pl-3 text-3xl font-extrabold">Tasks</h1>
       </div>
       <div className="relative flex flex-row items-center py-2">
@@ -24,10 +25,10 @@ export default async function Home() {
       <div className="flex flex-row items-center py-6">
         <div className="flex flex-row pr-4">
           <Image
-            src={CheckIcon}
+            src="/assets/check.svg"
             width={16}
             height={16}
-            alt="Spreadsheet Icon"
+            alt="Check Icon"
           />
           <select className="border-none bg-transparent outline-none">
             <option value="">All</option>
@@ -37,7 +38,7 @@ export default async function Home() {
           </select>
         </div>
         <div className="flex flex-row">
-          <Image src={SortIcon} height={13} alt="Spreadsheet Icon" />
+          <Image src="/assets/sort.svg" width={8} height={13} alt="Sort Icon" />
           <select className="border-none bg-transparent outline-none">
             <option value="">Priority</option>
             <option value="not-started">Low</option>
@@ -46,7 +47,11 @@ export default async function Home() {
           </select>
         </div>
       </div>
-
+      <Task />
+      <div className="flex cursor-pointer flex-row items-center border-b border-stone-500 py-2">
+        <Image src="/assets/plus.svg" width={13} height={13} alt="Sort Icon" />
+        <span className="pl-2 text-stone-500">New</span>
+      </div>
     </main>
   );
 }
