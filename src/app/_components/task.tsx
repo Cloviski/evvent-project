@@ -1,5 +1,7 @@
+"use client";
+
 interface Props {
-  taskname: string;
+  taskName: string;
   status: string;
   priority: string;
   summary: string | null;
@@ -9,7 +11,7 @@ export const Task: React.FC<Props> = (props) => {
   return (
     <>
       <div className="border-b border-r border-stone-500 px-8 py-1.5">
-        {props.taskname}
+        {props.taskName}
       </div>
       <div className="flex flex-row border-b border-r border-stone-500 px-8 py-1.5">
         <span>{props.status}</span>

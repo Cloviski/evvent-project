@@ -16,7 +16,7 @@ enum Priority {
 }
 
 interface Tasks {
-  task_id: number;
+  taskId: number;
   taskname: string;
   status: string;
   priority: string;
@@ -98,7 +98,7 @@ export default async function Home() {
         </div>
         {fetchedTasks.map((task) => (
           <Task
-            taskname={task.taskName}
+            taskName={task.taskName}
             status={task.status}
             priority={task.priority}
             summary={task.summary}
