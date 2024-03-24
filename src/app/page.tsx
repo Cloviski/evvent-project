@@ -1,33 +1,7 @@
 import Image from "next/image";
 import { Task } from "./_components/task";
-import { api } from "~/trpc/server";
-import { getServerAuthSession } from "~/server/auth";
-
-enum Status {
-  DONE = "Done",
-  IN_PROGRESS = "In progress",
-  NOT_STARTED = "Not started",
-}
-
-enum Priority {
-  LOW = "Low",
-  MEDIUM = "Medium",
-  HIGH = "High",
-}
-
-interface Tasks {
-  taskId: number;
-  taskname: string;
-  status: string;
-  priority: string;
-  summary: string;
-}
 
 export default async function Home() {
-  const session = await getServerAuthSession();
-
-
-  const fetchedTasks = await api.tasks.getTasks();
   return (
     <main className="flex min-h-screen flex-col bg-stone-900 px-24 pt-24 text-white text-opacity-75">
       <div className="flex flex-row items-start">
@@ -96,15 +70,7 @@ export default async function Home() {
           />
           <div className="pl-2">Summary</div>
         </div>
-        {fetchedTasks.map((task) => (
-          <Task
-            taskName={task.taskName}
-            status={task.status}
-            priority={task.priority}
-            summary={task.summary}
-            key={task.taskId}
-          />
-        ))}
+        <Task />
       </div>
       <div className="flex cursor-pointer flex-row items-center border-b border-stone-500 py-2">
         <Image src="/assets/plus.svg" width={13} height={13} alt="Sort Icon" />

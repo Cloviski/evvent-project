@@ -72,24 +72,3 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Task {
-  taskId    Int      @id @default(autoincrement())
-  taskName  String   
-  status    Status   
-  priority  Priority 
-  summary   String?  
-}
-
-// Define an enum for the task status
-enum Status {
-  NOT_STARTED
-  ON_PROGRESS
-  DONE
-}
-
-// Define an enum for the task priority
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-}

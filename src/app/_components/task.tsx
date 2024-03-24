@@ -1,26 +1,19 @@
 "use client";
 
-interface Props {
-  taskName: string;
-  status: string;
-  priority: string;
-  summary: string | null;
-}
-
-export const Task: React.FC<Props> = (props) => {
+export const Task: React.FC = () => {
   return (
     <>
       <div className="border-b border-r border-stone-500 px-8 py-1.5">
-        {props.taskName}
+        Go to a restaurant
       </div>
       <div className="flex flex-row border-b border-r border-stone-500 px-8 py-1.5">
-        <span>{props.status}</span>
+        <span>Not started</span>
       </div>
       <div className="flex flex-row border-b border-r border-stone-500 px-8 py-1.5">
-        <span>{props.priority}</span>
+        <span>Low</span>
       </div>
       <div className="flex flex-row border-b border-r border-stone-500 px-8 py-1.5">
-        <span>{props.summary}</span>
+        <span>Go to a restaurant that serves Norwegian cuisine</span>
       </div>
     </>
   );
