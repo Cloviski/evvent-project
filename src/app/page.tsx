@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Task } from "./_components/task";
 import { api } from "~/trpc/server";
+import { getServerAuthSession } from "~/server/auth";
 
 enum Status {
   DONE = "Done",
@@ -23,6 +24,8 @@ interface Tasks {
 }
 
 export default async function Home() {
+  const session = await getServerAuthSession();
+
 
   const fetchedTasks = await api.tasks.getTasks();
   return (
