@@ -73,11 +73,11 @@ model VerificationToken {
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  taskName  String   // Name of the task
-  status    Status   // Status of the task
-  priority  Priority // Priority of the task
-  summary   String?  // Summary of the task, optional
+  taskId    Int      @id @default(autoincrement())
+  taskName  String   
+  status    Status   
+  priority  Priority 
+  summary   String?  
 }
 
 // Define an enum for the task status

@@ -1,13 +1,30 @@
-import { CreatePost } from "~/app/_components/create-post";
-import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
 import Image from "next/image";
 import { Task } from "./_components/task";
+import { api } from "~/trpc/server";
+
+enum Status {
+  DONE = "Done",
+  IN_PROGRESS = "In progress",
+  NOT_STARTED = "Not started",
+}
+
+enum Priority {
+  LOW = "Low",
+  MEDIUM = "Medium",
+  HIGH = "High",
+}
+
+interface Tasks {
+  task_id: number;
+  taskname: string;
+  status: string;
+  priority: string;
+  summary: string;
+}
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-  const session = await getServerAuthSession();
 
+  const fetchedTasks = await api.tasks.getTasks();
   return (
     <main className="flex min-h-screen flex-col bg-stone-900 px-24 pt-24 text-white text-opacity-75">
       <div className="flex flex-row items-start">
@@ -34,7 +51,7 @@ export default async function Home() {
             <option value="">All</option>
             <option value="not-started">Not Started</option>
             <option value="in-progress">In Progress</option>
-            <option value="done">Done</option>
+            <option value="DONE">Done</option>
           </select>
         </div>
         <div className="flex flex-row">
@@ -47,7 +64,45 @@ export default async function Home() {
           </select>
         </div>
       </div>
-      <Task />
+      <div className="grid grid-cols-4">
+        <div className="w-full border-b border-stone-500">Task name</div>
+        <div className="flex w-full border-b border-stone-500">
+          <Image
+            src="/assets/check.svg"
+            width={16}
+            height={16}
+            alt="Check Icon"
+          />
+          <span className="pl-2">Status</span>
+        </div>
+        <div className="flex w-full border-b border-stone-500">
+          <Image
+            src="/assets/sort.svg"
+            width={13}
+            height={13}
+            alt="Sort Icon"
+          />
+          <span className="pl-2">Priority</span>
+        </div>
+        <div className="flex w-full border-b border-stone-500">
+          <Image
+            src="/assets/summary.svg"
+            width={13}
+            height={13}
+            alt="Summary Icon"
+          />
+          <div className="pl-2">Summary</div>
+        </div>
+        {fetchedTasks.map((task) => (
+          <Task
+            taskname={task.taskName}
+            status={task.status}
+            priority={task.priority}
+            summary={task.summary}
+            key={task.taskId}
+          />
+        ))}
+      </div>
       <div className="flex cursor-pointer flex-row items-center border-b border-stone-500 py-2">
         <Image src="/assets/plus.svg" width={13} height={13} alt="Sort Icon" />
         <span className="pl-2 text-stone-500">New</span>
@@ -56,24 +111,20 @@ export default async function Home() {
   );
 }
 
-async function CrudShowcase() {
+/*
+  const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
-  if (!session?.user) return null;
 
-  const latestPost = await api.post.getLatest();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
-  );
-}
+      {task.map((task: Tasks) => (
+        <Task 
+          taskname={task.taskname}
+          status={task.status}
+          priority={task.priority}
+          summary={task.summary}
+          key={task.task_id}
+        />
+      ))}
+*/
 
 /*
       <div className="flex flex-row items-start">
@@ -134,4 +185,27 @@ async function CrudShowcase() {
         <CrudShowcase />
       </div>
     </main>
+
+    async function CrudShowcase() {
+  const session = await getServerAuthSession();
+  if (!session?.user) return null;
+
+  const latestPost = await api.post.getLatest();
+
+  return (
+    <div className="w-full max-w-xs">
+      {latestPost ? (
+        <p className="truncate">Your most recent post: {latestPost.name}</p>
+      ) : (
+        <p>You have no posts yet.</p>
+      )}
+
+      <CreatePost />
+    </div>
+  );
+}
+
+function useClient() {
+  throw new Error("Function not implemented.");
+}
 */
